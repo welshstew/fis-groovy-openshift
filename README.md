@@ -7,3 +7,7 @@ Simple Dockerfile, adding groovy into the RedHat fis java images, so now this im
 - groovy
 
 profit.
+
+
+  docker build -t welshstew/fis-groovy-openshift .
+  
