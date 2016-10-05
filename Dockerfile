@@ -1,18 +1,16 @@
-FROM registry.access.redhat.com/jboss-fuse-6/fis-java-openshift:1.0
+FROM registry.access.redhat.com/jboss-fuse-6/fis-java-openshift:latest
 
 USER root
 
-ENV GROOVY_VERSION 2.3.9
+ENV GROOVY_VERSION 2.4.7
+ENV PATH /opt/groovy/bin:$PATH
 
-RUN yum -y install wget
-
+#download and install groovy - changing to local nexus version
 RUN cd /tmp && \
-    wget http://dl.bintray.com/groovy/maven/groovy-binary-${GROOVY_VERSION}.zip && \
-    unzip groovy-binary-${GROOVY_VERSION}.zip && \
+    curl -O http://nexus-ci.rhel-cdk.10.1.2.2.xip.io/service/local/repo_groups/public/content/org/groovy/apache-groovy-binary/2.4.7/apache-groovy-binary-2.4.7.zip && \
+    unzip apache-groovy-binary-${GROOVY_VERSION}.zip && \
     mv groovy-${GROOVY_VERSION} /opt/groovy && \
-    rm groovy-binary-${GROOVY_VERSION}.zip
+    rm apache-groovy-binary-${GROOVY_VERSION}.zip
 
-ENV GROOVY_HOME /opt/groovy
-ENV PATH $GROOVY_HOME/bin/:$PATH
-
+#change back to jboss user
 USER jboss

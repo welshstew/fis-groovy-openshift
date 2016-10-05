@@ -1,0 +1,107 @@
+{
+    "apiVersion": "v1",
+    "kind": "Template",
+    "labels": {},
+    "metadata": {
+        "annotations": {
+            "description": "Template to build a groovy based on top of java"
+        },
+        "labels": { "app": "fis-groovy-openshift" },
+        "name": "fis-groovy-openshift"
+    },
+    "objects": [
+        {
+            "apiVersion": "v1",
+            "kind": "ImageStream",
+            "metadata": {
+                "annotations": {},
+                "labels": {
+                    "app": "fis-groovy-openshift",
+                    "group": "build",
+                    "project": "fis-groovy-openshift",
+                    "version": "1.0.0"
+                },
+                "name": "fis-groovy-openshift"
+            },
+            "spec": {
+                "dockerImageRepository": "${REGISTRY}:5000/${IS_PULL_NAMESPACE}/fis-groovy-openshift",
+                "tags": [
+                    {
+                        "annotations": {
+                            "tags": "${IS_TAG}"
+                        },
+                        "from": {
+                            "kind": "ImageStreamTag",
+                            "name": "fis-groovy-openshift"
+                        },
+                        "name": "${IS_TAG}"
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "BuildConfig",
+            "metadata": {
+                "annotations": {},
+                "labels": {
+                    "app": "fis-groovy-openshift",
+                    "group": "build",
+                    "project": "fis-groovy-openshift",
+                    "version": "1.0.0"
+                },
+                "name": "fis-groovy-openshift"
+            },
+            "spec": {
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "fis-groovy-openshift:${IS_TAG}"
+                    }
+                },
+                "source": {
+                    "git": {
+                        "uri": "https://github.com/welshstew/fis-groovy-openshift.git"
+                    },
+                    "images": [],
+                    "secrets": [],
+                    "type": "Git"
+                },
+                "strategy": {
+                    "dockerStrategy": {
+                        "env": [],
+                        "from": {
+                            "kind": "ImageStreamTag",
+                            "name": "fis-java-openshift:latest",
+                            "namespace": "openshift"
+                        },
+                        "incremental": false
+                    },
+                    "type": "Docker"
+                },
+                "triggers": [
+                    {
+                        "imageChange": {
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "fis-java-openshift:latest",
+                                "namespace": "openshift"
+                            }
+                        },
+                        "type": "ImageChange"
+                    }
+                ]
+            }
+        }
+    ],
+  "parameters" : [ {
+    "name" : "IS_TAG",
+    "value" : "latest"
+  }, {
+    "name" : "REGISTRY",
+    "value" : "172.30.177.239"
+  }, {
+    "name" : "IS_PULL_NAMESPACE",
+    "value" : "ci"
+  } ]
+}

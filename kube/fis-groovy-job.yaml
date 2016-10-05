@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Job
+metadata:
+  name: groovy-print-job
+spec:
+  selector:         
+    matchLabels:
+      app: groovy
+  parallelism: 1    
+  completions: 1    
+  template:         
+    metadata:
+      name: groovy
+      labels:
+        app: groovy
+    spec:
+      containers:
+      - name: groovy
+        image: fis-groovy-openshift:latest
+        command: ["groovy",  "-e", "\"println 'Hello World'\""]
+      restartPolicy: Never
