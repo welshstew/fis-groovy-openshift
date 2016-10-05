@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: groovy
-        image: fis-groovy-openshift:latest
+        image: 172.30.177.25:5000/groovy/fis-groovy-openshift@sha256:b9d95b3214d928a666e430e96cb016a867a34a31ca937133d4db4a1f468732e0
         command: ["groovy",  "-e", "\"println 'Hello World'\""]
       restartPolicy: Never

@@ -4,7 +4,7 @@
     "labels": {},
     "metadata": {
         "annotations": {
-            "description": "Template to build a groovy based on top of java"
+            "description": "Template to bake groovy into the RH java-fis-openshift image"
         },
         "labels": { "app": "fis-groovy-openshift" },
         "name": "fis-groovy-openshift"
@@ -72,7 +72,7 @@
                         "env": [],
                         "from": {
                             "kind": "ImageStreamTag",
-                            "name": "fis-java-openshift:latest",
+                            "name": "fis-java-openshift:1.0",
                             "namespace": "openshift"
                         },
                         "incremental": false
@@ -84,7 +84,7 @@
                         "imageChange": {
                             "from": {
                                 "kind": "ImageStreamTag",
-                                "name": "fis-java-openshift:latest",
+                                "name": "fis-java-openshift:1.0",
                                 "namespace": "openshift"
                             }
                         },
